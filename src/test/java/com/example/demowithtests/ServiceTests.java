@@ -5,6 +5,7 @@ import com.example.demowithtests.domain.Gender;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.EmployeeServiceBean;
 import com.example.demowithtests.util.exception.ResourceNotFoundException;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,7 @@ public class ServiceTests {
                 .build();
     }
 
+
     @Test
     @DisplayName("Save employee test")
     public void whenSaveEmployee_shouldReturnEmployee() {
@@ -56,6 +58,7 @@ public class ServiceTests {
         assertThat(created.getName()).isSameAs(employee.getName());
         verify(employeeRepository).save(employee);
     }
+
 
     @Test
     @DisplayName("Get employee by exist id test")
@@ -69,6 +72,7 @@ public class ServiceTests {
         verify(employeeRepository).findById(employee.getId());
     }
 
+
     @Test
     @DisplayName("Throw exception when employee not found test")
     public void should_throw_exception_when_employee_doesnt_exist() {
@@ -76,6 +80,7 @@ public class ServiceTests {
         when(employeeRepository.findById(anyInt())).thenThrow(ResourceNotFoundException.class);
         assertThrows(ResourceNotFoundException.class, () -> employeeRepository.findById(anyInt()));
     }
+
 
     @Test
     @DisplayName("Read employee by id test")

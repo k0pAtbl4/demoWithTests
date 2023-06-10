@@ -6,6 +6,7 @@ import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.util.config.EmployeeConverter;
 import com.example.demowithtests.web.EmployeeController;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,6 +57,7 @@ public class ControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
+
     @Test
     @DisplayName("POST /api/users")
     @WithMockUser(roles = "ADMIN")
@@ -83,6 +85,7 @@ public class ControllerTests {
         verify(service).create(any());
     }
 
+
     @Test
     @DisplayName("Entity POST /api/users")
     @WithMockUser(roles = "ADMIN")
@@ -108,6 +111,7 @@ public class ControllerTests {
         verifyNoMoreInteractions(this.service);
     }
 
+
     @Test
     @DisplayName("GET /api/users/{id}")
     @WithMockUser(roles = "USER")
@@ -129,6 +133,7 @@ public class ControllerTests {
 
         verify(service).getById(anyInt());
     }
+
 
     @Test
     @DisplayName("PUT /api/users/{id}")
@@ -154,6 +159,7 @@ public class ControllerTests {
         verify(service).updateById(eq(1), any(Employee.class));
     }
 
+
     @Test
     @DisplayName("PATCH /api/users/{id}")
     @WithMockUser(roles = "ADMIN")
@@ -169,6 +175,7 @@ public class ControllerTests {
 
         verify(service).removeById(1);
     }
+
 
     @Test
     @DisplayName("GET /api/users/p")

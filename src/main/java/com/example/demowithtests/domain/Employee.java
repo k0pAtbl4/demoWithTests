@@ -21,12 +21,22 @@ public class Employee {
     private String name;
     private String country;
     private String email;
+
+    private boolean is_deleted;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private Set<Address> addresses = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    public boolean isIs_deleted() {
+        return is_deleted;
+    }
+
+    public void setIs_deleted(boolean is_deleted) {
+        this.is_deleted = is_deleted;
+    }
 
     public Integer getId() {
         return id;

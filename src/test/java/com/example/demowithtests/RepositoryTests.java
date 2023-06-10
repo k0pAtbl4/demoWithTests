@@ -5,6 +5,7 @@ import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.Gender;
 import com.example.demowithtests.repository.EmployeeRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.Ignore;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,6 +24,7 @@ public class RepositoryTests {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
 
     @Test
     @Order(1)
@@ -48,6 +50,7 @@ public class RepositoryTests {
         Assertions.assertThat(employee.getName()).isEqualTo("Mark");
     }
 
+
     @Test
     @Order(2)
     @DisplayName("Get employee by id test")
@@ -59,6 +62,7 @@ public class RepositoryTests {
         Assertions.assertThat(employee.getName()).isEqualTo("Mark");
     }
 
+
     @Test
     @Order(3)
     @DisplayName("Get employees test")
@@ -69,6 +73,7 @@ public class RepositoryTests {
         Assertions.assertThat(employeesList.size()).isGreaterThan(0);
 
     }
+
 
     @Test
     @Order(4)
@@ -85,6 +90,7 @@ public class RepositoryTests {
 
     }
 
+
     @Test
     @Order(5)
     @DisplayName("Find employee by gender test")
@@ -94,6 +100,7 @@ public class RepositoryTests {
 
         assertThat(employees.get(0).getGender()).isEqualTo(Gender.M);
     }
+
 
     @Test
     @Order(6)
