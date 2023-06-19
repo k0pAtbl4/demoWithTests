@@ -2,17 +2,14 @@ package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.repository.EmployeeRepository;
-import com.example.demowithtests.util.exception.ResourceNotFoundException;
 import com.example.demowithtests.util.exception.ResourceWasDeletedException;
+import com.example.demowithtests.util.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,7 +28,7 @@ public class EmployeeServiceBean implements EmployeeService {
     private EntityManager entityManager;
 
     @Override
-   // @Transactional(propagation = Propagation.MANDATORY)
+    // @Transactional(propagation = Propagation.MANDATORY)
     public Employee create(Employee employee) {
         return employeeRepository.save(employee);
     }
@@ -44,6 +41,7 @@ public class EmployeeServiceBean implements EmployeeService {
     @Override
     public List<Employee> getAll() {
         List<Employee> employees = employeeRepository.findAll();
+
         return employees.stream().filter(el -> !el.isIs_deleted()).collect(Collectors.toList());
     }
 
@@ -54,6 +52,7 @@ public class EmployeeServiceBean implements EmployeeService {
         Page<Employee> list = employeeRepository.findAll(pageable);
         log.debug("getAllWithPagination() - end: list = {}", list);
 
+
         List<Employee> employees = list.stream().filter(el -> !el.isIs_deleted()).collect(Collectors.toList());
         list = new PageImpl<>(employees, pr, employees.size());
 
@@ -62,10 +61,10 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public Employee getById(Integer id) {
-        var employee = employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
+        var employee = employeeRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         if (employee.isIs_deleted()) {
-            throw new EntityNotFoundException("Employee was deleted with id = " + id);
+            throw new ResourceWasDeletedException();
         }
         return employee;
     }
@@ -80,15 +79,15 @@ public class EmployeeServiceBean implements EmployeeService {
                     entity.setIs_deleted(employee.isIs_deleted());
                     return employeeRepository.save(entity);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
     }
 
     @Override
     public void removeById(Integer id) {
-        var employee = employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
+        var employee = employeeRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         if (employee.isIs_deleted()) {
-            throw new EntityNotFoundException("Employee was deleted with id = " + id);
+            throw new ResourceWasDeletedException();
         } else {
             employee.setIs_deleted(true);
             updateById(id, employee);
@@ -133,8 +132,9 @@ public class EmployeeServiceBean implements EmployeeService {
     @Override
     public void removeAll() {
         List<Employee> employees = employeeRepository.findAll();
-        for(Employee employee : employees) {
-            if(!employee.isIs_deleted()) {
+
+        for (Employee employee : employees) {
+            if (!employee.isIs_deleted()) {
                 employee.setIs_deleted(true);
                 updateById(employee.getId(), employee);
             }
@@ -178,6 +178,7 @@ public class EmployeeServiceBean implements EmployeeService {
         List<Employee> employeeList = employeeRepository.findAll().
                 stream().filter(el -> !el.isIs_deleted()).collect(Collectors.toList());
 
+
         List<String> countries = employeeList.stream()
                 .map(country -> country.getCountry())
                 .collect(Collectors.toList());
@@ -220,7 +221,8 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public List<Employee> filterByCountry(String country) {
-        return employeeRepository.findByCountry(country).
-                stream().filter(el -> !el.isIs_deleted()).collect(Collectors.toList());
+        List<Employee> list = employeeRepository.findByCountry(country);
+
+        return list.stream().filter(el -> !el.isIs_deleted()).collect(Collectors.toList());
     }
 }
