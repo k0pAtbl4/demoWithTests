@@ -3,6 +3,7 @@ package com.example.demowithtests.web;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.EmployeeDto;
 import com.example.demowithtests.dto.EmployeeReadDto;
+import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.util.config.EmployeeConverter;
 import io.swagger.v3.oas.annotations.Operation;
@@ -123,6 +124,18 @@ public class EmployeeController {
         //Pageable paging = PageRequest.of(page, size);
         //Pageable paging = PageRequest.of(page, size, Sort.by("name").ascending());
         return employeeService.findByCountryContaining(country, page, size, sortList, sortOrder.toString());
+    }
+
+    @GetMapping("/users/e")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Employee> findByNullEmail() {
+        return employeeService.filterByNullEmails();
+    }
+
+    @PutMapping("/users/c")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Employee> changeCountriesFromLowerCaseToUpperCase() {
+        return employeeService.changeLowerCaseToUpperCaseCountries();
     }
 
     @GetMapping("/users/c")

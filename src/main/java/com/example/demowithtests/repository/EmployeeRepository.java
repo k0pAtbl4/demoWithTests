@@ -25,6 +25,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Employee findByName(String name);
 
     Employee findEmployeeByEmailNotNull();
+    List<Employee> findByEmailNull();
+    @Query(value = "select * from users where country ~ '^[а-я]|^[a-z]'", nativeQuery = true)
+    List<Employee> findAllLowerCaseCountries();
 
     @NotNull
     Page<Employee> findAll(Pageable pageable);
