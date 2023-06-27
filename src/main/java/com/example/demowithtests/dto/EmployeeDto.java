@@ -35,4 +35,5 @@ public class EmployeeDto {
     public Gender gender;
 
     public Set<AddressDto> addresses = new HashSet<>();
+    public boolean is_deleted;
 }

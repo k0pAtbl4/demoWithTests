@@ -11,7 +11,7 @@ public class MappingConfig implements OrikaMapperFactoryConfigurer {
     public void configure(MapperFactory mapperFactory) {
 
         mapperFactory.classMap(Employee.class, EmployeeDto.class)
-                .customize(new EmployeeMapper())
+                .customize(new OldEmployeeMapper())
                 .byDefault()
                 .register();
 
