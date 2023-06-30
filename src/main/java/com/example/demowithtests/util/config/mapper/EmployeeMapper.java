@@ -1,6 +1,8 @@
 package com.example.demowithtests.util.config.mapper;
 
+import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.dto.AddressDto;
 import com.example.demowithtests.dto.EmployeeDto;
 import com.example.demowithtests.dto.EmployeeReadDto;
 import org.mapstruct.InheritInverseConfiguration;
@@ -17,6 +19,7 @@ public interface EmployeeMapper {
     EmployeeDto toDto(Employee entity);
     @InheritInverseConfiguration
     Employee toEntity(EmployeeDto dto);
+    Address map(AddressDto value);
 
     List<EmployeeReadDto> listToReadDto(List<Employee> entityList);
     @InheritInverseConfiguration

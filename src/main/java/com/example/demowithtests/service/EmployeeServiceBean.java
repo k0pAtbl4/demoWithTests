@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeServiceBean implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -61,7 +61,7 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public Employee getById(Integer id) {
-        var employee = employeeRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         if (employee.isIs_deleted()) {
             throw new ResourceWasDeletedException();
@@ -84,7 +84,7 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public void removeById(Integer id) {
-        var employee = employeeRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         if (employee.isIs_deleted()) {
             throw new ResourceWasDeletedException();
@@ -205,14 +205,14 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public Optional<String> findEmails() {
-        var employeeList = employeeRepository.findAll().
+        List<Employee> employeeList = employeeRepository.findAll().
                 stream().filter(el -> !el.isIs_deleted()).collect(Collectors.toList());
 
-        var emails = employeeList.stream()
+        List<String> emails = employeeList.stream()
                 .map(Employee::getEmail)
                 .collect(Collectors.toList());
 
-        var opt = emails.stream()
+        String opt = emails.stream()
                 .filter(s -> s.endsWith(".com"))
                 .findFirst()
                 .orElse("error?");
