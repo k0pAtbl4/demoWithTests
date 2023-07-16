@@ -3,9 +3,7 @@ package com.example.demowithtests.web;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.EmployeeDto;
 import com.example.demowithtests.dto.EmployeeReadDto;
-import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.EmployeeService;
-import com.example.demowithtests.util.config.EmployeeConverter;
 import com.example.demowithtests.util.config.mapper.EmployeeMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,6 +31,7 @@ import java.util.Optional;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+
     private final EmployeeMapper employeeMapper;
 
     //Операция сохранения юзера в базу данных
@@ -45,14 +44,15 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
     public EmployeeReadDto saveEmployee(@RequestBody @Valid EmployeeDto requestForSave) {
-        Employee employee = employeeMapper.toEntity(requestForSave);
-        return employeeMapper.toReadDto(employee);
+        Employee employee = employeeMapper.toEmployee(requestForSave);
+        EmployeeReadDto response = employeeMapper.toReadDto(employeeService.create(employee));
+        return response;
     }
 
     @PostMapping("/usersS")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveEmployee1(@RequestBody EmployeeDto employeeDto) {
-        Employee employee = employeeMapper.toEntity(employeeDto);
+        final Employee employee = employeeMapper.INSTANCE.toEmployee(employeeDto);
         employeeService.create(employee);
     }
 
@@ -95,7 +95,7 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public EmployeeReadDto refreshEmployee(@PathVariable("id") Integer id, @RequestBody EmployeeDto employeeDto) {
 
-        return employeeMapper.toReadDto(employeeService.updateById(id, employeeMapper.toEntity(employeeDto)));
+        return employeeMapper.toReadDto(employeeService.updateById(id, employeeMapper.toEmployee(employeeDto)));
     }
 
     //Удаление по id
@@ -133,7 +133,12 @@ public class EmployeeController {
     @PutMapping("/users/c")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeReadDto> changeCountriesFromLowerCaseToUpperCase() {
-        return employeeMapper.listToReadDto(employeeService.changeLowerCaseToUpperCaseCountries());
+        List<Employee> employeeList = employeeService.filterLowerCaseCountries();
+        for(Employee e : employeeList) {
+            employeeService.updateById(e.getId(), e);
+        }
+        return employeeMapper.listToReadDto(employeeList);
+
     }
 
     @GetMapping("/users/c")

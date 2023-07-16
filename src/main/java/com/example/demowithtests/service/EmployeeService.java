@@ -56,6 +56,6 @@ public interface EmployeeService {
 
     List<Employee> filterByNullEmails();
 
-    List<Employee> changeLowerCaseToUpperCaseCountries();
+    List<Employee> filterLowerCaseCountries();
 
 }

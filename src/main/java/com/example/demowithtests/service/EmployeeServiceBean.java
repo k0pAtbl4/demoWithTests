@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeServiceBean implements EmployeeService {
 
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -90,7 +90,7 @@ public class EmployeeServiceBean implements EmployeeService {
             throw new ResourceWasDeletedException();
         } else {
             employee.setIs_deleted(true);
-            updateById(id, employee);
+            employeeRepository.save(employee);
         }
 
     }
@@ -232,7 +232,7 @@ public class EmployeeServiceBean implements EmployeeService {
     }
 
     @Override
-    public List<Employee> changeLowerCaseToUpperCaseCountries() {
+    public List<Employee> filterLowerCaseCountries() {
         List<Employee> list = employeeRepository.findAllLowerCaseCountries();
         String country = "";
         for(Employee e : list) {
@@ -240,7 +240,7 @@ public class EmployeeServiceBean implements EmployeeService {
             if(country != null && country.length() != 0) {
                 e.setCountry(country.substring(0, 1).toUpperCase() + country.substring(1));
             }
-            updateById(e.getId(), e);
+            //updateById(e.getId(), e);
         }
         return list;
     }

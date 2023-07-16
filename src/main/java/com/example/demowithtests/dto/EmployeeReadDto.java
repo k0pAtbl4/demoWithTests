@@ -2,6 +2,7 @@ package com.example.demowithtests.dto;
 
 import com.example.demowithtests.domain.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,8 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+@Builder
 
 public class EmployeeReadDto {
 

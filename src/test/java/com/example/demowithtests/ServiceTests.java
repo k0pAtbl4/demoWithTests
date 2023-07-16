@@ -5,7 +5,7 @@ import com.example.demowithtests.domain.Gender;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.EmployeeServiceBean;
 import com.example.demowithtests.util.exception.ResourceNotFoundException;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
@@ -43,7 +44,7 @@ public class ServiceTests {
                 .id(1)
                 .name("Mark")
                 .country("UK")
-                .email("test@mail.com")
+                .email("mark@mail.com")
                 .gender(Gender.M)
                 .build();
     }
@@ -103,11 +104,34 @@ public class ServiceTests {
     }
 
     @Test
+    @DisplayName("Filter by null emails test")
+    public void filterByNullEmailTest() {
+        employee.setEmail(null);
+        when(employeeRepository.findByEmailNull()).thenReturn(List.of(employee));
+        List<Employee> expected = service.filterByNullEmails();
+        assertThat(expected).isEqualTo(List.of(employee));
+        verify(employeeRepository).findByEmailNull();
+    }
+
+    @Test
+    @DisplayName("Find all lowercase countries test")
+    public void findAllLowerCaseCountriesTest() {
+        employee.setCountry("ukraine");
+        when(employeeRepository.findAllLowerCaseCountries()).thenReturn(List.of(employee));
+        List<Employee> expected = service.filterLowerCaseCountries();
+        assertThat(expected.get(0).getCountry()).isEqualTo(employee.getCountry());
+        verify(employeeRepository).findAllLowerCaseCountries();
+    }
+
+    @Test
     @DisplayName("Delete employee test")
     public void deleteEmployeeTest() {
-
-        when(employeeRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
+        when(employeeRepository.findById(employee.getId())).thenReturn(Optional.ofNullable(employee));
         service.removeById(employee.getId());
-        verify(employeeRepository).delete(employee);
+
+        Assertions.assertTrue(employee.isIs_deleted());
+        verify(employeeRepository).save(employee);
     }
+
+
 }

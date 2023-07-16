@@ -34,7 +34,8 @@ public class RepositoryTests {
 
         var employee = Employee.builder()
                 .name("Mark")
-                .country("England")
+                .country("england")
+                .email(null)
                 .addresses(new HashSet<>(Set.of(
                         Address
                                 .builder()
@@ -101,9 +102,26 @@ public class RepositoryTests {
         assertThat(employees.get(0).getGender()).isEqualTo(Gender.M);
     }
 
-
     @Test
     @Order(6)
+    @DisplayName("Find employee with null email test")
+    public void findByEmailNullTest() {
+        var employees = employeeRepository.findByEmailNull();
+
+        Assertions.assertThat(employees.get(0).getId()).isEqualTo(1);
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("Find employees with lowercase countries test")
+    public void findAllLowerCaseCountriesTest() {
+        var employees = employeeRepository.findAllLowerCaseCountries();
+
+        Assertions.assertThat(employees.get(0).getId()).isEqualTo(1);
+    }
+
+    @Test
+    @Order(8)
     @Rollback(value = false)
     @DisplayName("Delete employee test")
     public void deleteEmployeeTest() {

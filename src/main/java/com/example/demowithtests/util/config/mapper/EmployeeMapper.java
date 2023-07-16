@@ -18,7 +18,7 @@ public interface EmployeeMapper {
     EmployeeReadDto toReadDto(Employee entity);
     EmployeeDto toDto(Employee entity);
     @InheritInverseConfiguration
-    Employee toEntity(EmployeeDto dto);
+    Employee toEmployee(EmployeeDto dto);
     Address map(AddressDto value);
 
     List<EmployeeReadDto> listToReadDto(List<Employee> entityList);
