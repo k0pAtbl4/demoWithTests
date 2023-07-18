@@ -58,4 +58,8 @@ public interface EmployeeService {
 
     List<Employee> filterLowerCaseCountries();
 
+    List<Employee> getAllUkrainians() throws Exception;
+
+    List<Employee> filterByNameAndCountry(String name, String country) throws Exception;
+
 }

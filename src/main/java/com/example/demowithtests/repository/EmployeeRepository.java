@@ -36,4 +36,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     Page<Employee> findByCountryContaining(String country, Pageable pageable);
 
+    @Query(value = "SELECT e FROM Employee e WHERE e.country = 'Ukraine'")
+    List<Employee> findAllUkrainians();
+
+    @Query(value = "SELECT * FROM users WHERE users.name = :name AND users.country = :country", nativeQuery = true)
+    List<Employee> findByNameAndCountry(String name, String country);
 }

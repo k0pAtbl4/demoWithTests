@@ -164,4 +164,18 @@ public class EmployeeController {
     public List<EmployeeReadDto> getByCountry(@RequestParam(required = true) String country) {
         return employeeMapper.listToReadDto(employeeService.filterByCountry(country));
     }
+
+    @GetMapping("/users/ua")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EmployeeReadDto> getAllUkrainians() throws Exception {
+
+        return employeeMapper.listToReadDto(employeeService.getAllUkrainians());
+    }
+
+    @GetMapping("/users/nc")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EmployeeReadDto> getAllByNameAndCountry(@RequestParam(required = true) String country,
+                                                        @RequestParam(required = true) String name) throws Exception {
+        return employeeMapper.listToReadDto(employeeService.filterByNameAndCountry(name, country));
+    }
 }

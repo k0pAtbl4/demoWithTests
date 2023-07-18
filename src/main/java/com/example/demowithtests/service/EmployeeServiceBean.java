@@ -96,12 +96,7 @@ public class EmployeeServiceBean implements EmployeeService {
     }
 
 
-
-
-
-
-
-   /* public boolean isValid(Employee employee) {
+    /* public boolean isValid(Employee employee) {
         String regex = "^[0-9]{10}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(employee.getPhone());
@@ -241,6 +236,33 @@ public class EmployeeServiceBean implements EmployeeService {
                 e.setCountry(country.substring(0, 1).toUpperCase() + country.substring(1));
             }
             //updateById(e.getId(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Employee> getAllUkrainians() throws Exception {
+        List<Employee> listOfUa = employeeRepository.findAllUkrainians();
+        listOfUa = filterByNotDeletedUsers(listOfUa);
+        return listOfUa;
+    }
+
+    @Override
+    public List<Employee> filterByNameAndCountry(String name, String country) throws Exception {
+        List<Employee> list = employeeRepository.findByNameAndCountry(name, country);
+        list = filterByNotDeletedUsers(list);
+        return list;
+    }
+
+    public List<Employee> filterByNotDeletedUsers(List<Employee> list) throws Exception {
+        for(int i = 0; i < list.size(); i++) {
+            if(list.get(i).isIs_deleted()) {
+                list.remove(list.get(i));
+                i--;
+            }
+        }
+        if(list.isEmpty()) {
+            throw new Exception("No suitable users found");
         }
         return list;
     }
