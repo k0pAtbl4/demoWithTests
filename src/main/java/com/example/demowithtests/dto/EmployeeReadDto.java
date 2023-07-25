@@ -14,23 +14,27 @@ import java.util.Set;
 
 @Builder
 
-public class EmployeeReadDto {
+public record EmployeeReadDto (
 
     @NotNull(message = "Name may not be null")
     @Size(min = 2, max = 32, message = "Name must be between 2 and 32 characters long")
     @Schema(description = "Name of an employee.", example = "Billy", required = true)
-    public String name;
+    String name,
 
-    public String country;
+    String country,
 
     @Email
     @NotNull
-    public String email;
+    String email,
 
-    public Set<AddressDto> addresses = new HashSet<>();
+    Set<AddressDto> addresses,
 
-    //todo: dfhgjkdfhg Jira - 5544
-    public Date date = Date.from(Instant.now());
+    Date date,
 
-    public Gender gender;
+    Gender gender
+) {
+    @Builder
+    public EmployeeReadDto {
+        date = new Date();
+    }
 }

@@ -100,7 +100,7 @@
             <scope>test</scope>
         </dependency>
         <!-- orika -->
-        <dependency>
+        <!--<dependency>
             <groupId>dev.akkinoc.spring.boot</groupId>
             <artifactId>orika-spring-boot-starter</artifactId>
             <version>2.3.3</version>
@@ -110,7 +110,7 @@
             <artifactId>orika-core</artifactId>
             <version>1.5.4</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency> -->
         <!-- swagger -->
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -150,6 +150,14 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${project.parent.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
             </plugin>
             <!--<plugin>
                 <groupId>com.spotify</groupId>

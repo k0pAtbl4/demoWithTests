@@ -1,23 +1,31 @@
 package com.example.demowithtests.dto;
 
-import lombok.experimental.Accessors;
-
 import java.time.Instant;
 import java.util.Date;
 
-//@Accessors(chain = true)
-public class AddressDto {
+public record AddressDto (
 
-    public Long id;
+    Long id,
 
-    public Boolean addressHasActive = Boolean.TRUE;
+    Boolean addressHasActive,
 
-    public String country;
+    String country,
 
-    public String city;
+    String city,
 
-    public String street;
-
-    //todo: dfhgjkdfhg Jira - 5544
-    public Date date = Date.from(Instant.now());
+    String street,
+    Date date
+) {
+    public AddressDto {
+        date = Date.from(Instant.now());
+    }
 }
+
+/* public void sendEmail(String to, String body, String subject) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setText(body);
+        message.setSubject(subject);
+
+        JavaMailSender.send(message);
+    } */

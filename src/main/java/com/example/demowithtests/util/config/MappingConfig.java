@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.config;
+/*package com.example.demowithtests.util.config;
 
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.EmployeeDto;
@@ -19,4 +19,4 @@ public class MappingConfig implements OrikaMapperFactoryConfigurer {
                 .byDefault()
                 .register();
     }
-}
+}*/

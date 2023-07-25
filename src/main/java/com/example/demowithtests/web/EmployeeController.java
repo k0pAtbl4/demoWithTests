@@ -86,7 +86,7 @@ public class EmployeeController {
         Employee employee = employeeService.getById(id);
         log.debug("getById() EmployeeController - to dto start: id = {}", id);
         EmployeeReadDto dto = employeeMapper.toReadDto(employee);
-        log.debug("getEmployeeById() EmployeeController - end: name = {}", dto.name);
+        log.debug("getEmployeeById() EmployeeController - end: name = {}", dto.name());
         return dto;
     }
 
